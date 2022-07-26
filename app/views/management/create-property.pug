@@ -1,0 +1,113 @@
+extends ../layouts/app
+
+block styles
+    //css styles for leaflet
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
+block content
+    div(class="mx-auto w-11/12 md:w-3/6")
+        form(id="add-new-property-form" action="/properties/create" method="POST" class="space-y-8 bg-gray-800 p-2 rounded-xl shadow-2xl")
+            input(type="hidden" name="_csrf" value=csrfToken)
+            div(id="general-info" class="space-y-4")
+                h3(class="text-lg leading-6 font-medium text-gray-200") General Info
+                p(class="text-gray-400") Add Info about the property
+
+                div(class="")
+                    label(for="title" class="block text-base uppercase text-gray-300 mb-2 font-medium") Title
+                    input(type="text" name="title" id="title" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Property title" value=`${inputs ? inputs.title : ''}`)
+                    span(class="text-red-500") #{(errors.inputErrors.title) ? errors.inputErrors.title.msg : ''}
+                
+                div()
+                    label(for="category_type" class="block text-base uppercase text-gray-300 mb-2 font-medium") Category
+                    select(name="category_type" id="category_type" class="w-full px-3 py-2")
+                        option(value="null", selected=(!inputs || inputs.category_type) ? true : false, disabled) --Select One--
+                        for category of categoriesList
+                            option(value=category.id_category, selected=((inputs && (inputs.category_type == category.id_category)) ? true : false)) #{category.name}
+                    span(class="text-red-500") #{(errors.inputErrors.category_type) ? errors.inputErrors.category_type.msg : ''}
+
+                div(class="flex items-center justify-between")
+                    div(class="w-1/2")
+                        label(for="price" class="block text-base uppercase text-gray-300 mb-2 font-medium") Price
+                        input(type="number" min=500  name="price" id="price" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Property price" value=`${inputs ? inputs.price : ''}`)
+                        span(class="text-red-500") #{(errors.inputErrors.price) ? errors.inputErrors.price.msg : ''}
+                    div(class="mx-auto w-1/2 text-center")
+                        div(class="my-5")
+                        p(class="font-semibold text-2xl text-gray-200 break-words") 
+                            | $
+                            span(id="property-value") 0
+
+                div(class="flex items-center justify-between")
+                    div(class="w-1/2")
+                        label(for="bedrooms" class="block text-base uppercase text-gray-300 mb-2 font-medium") Bedrooms
+                        input(type="number" min=0 name="bedrooms" id="bedrooms" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of bedrooms" value=`${inputs ? inputs.bedrooms : ''}`)
+                        span(class="text-red-500") #{errors.inputErrors.bedrooms ? errors.inputErrors.bedrooms.msg : ''}
+                    div(class="mx-auto w-1/2 text-center")
+                        div(class="my-5")
+                        p(class="font-semibold text-2xl text-gray-200 break-words")
+                            span(id="number-of-bedrooms") 
+                                | 0 
+                            span(id="bedrooms-word")
+                                | 
+                                |bedrooms
+
+                div(class="flex items-center justify-between")
+                    div(class="w-1/2")
+                        label(for="bathrooms" class="block text-base uppercase text-gray-300 mb-2 font-medium") Bathrooms
+                        input(type="number" min=0 name="bathrooms" id="bathrooms" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of bathrooms" value=`${inputs ? inputs.bathrooms : ''}`)
+                        span(class="text-red-500") #{errors.inputErrors.bathrooms ? errors.inputErrors.bathrooms.msg : ''}
+                    div(class="mx-auto w-1/2 text-center")
+                        div(class="my-5")
+                        p(class="font-semibold text-2xl text-gray-200 break-words")
+                            span(id="number-of-bathrooms") 
+                                | 0 
+                            span(id="bathrooms-word")
+                                | 
+                                |bathrooms
+
+                div(class="flex items-center justify-between")
+                    div(class="w-1/2")
+                        label(for="parkings" class="block text-base uppercase text-gray-300 mb-2 font-medium") Parking Spaces
+                        input(type="number" min=0 name="parkings" id="parkings" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of parking spaces" value=`${inputs ? inputs.parkings : ''}`)
+                        span(class="text-red-500") #{errors.inputErrors.parkings ? errors.inputErrors.parkings.msg : ''}
+                    div(class="mx-auto w-1/2 text-center")
+                        div(class="my-5")
+                        p(class="font-semibold text-2xl text-gray-200 break-words")
+                            span(id="number-of-parking-spaces") 
+                                | 0 
+                            span(id="parking-word")
+                                | 
+                                |spaces
+
+                label(for="description" class="block text-base uppercase text-gray-300 mb-2 font-medium") Description
+                p(class="text-gray-400") Add a description about the property
+                textarea(name="description" id="description" rows="5" class="w-full p-2 placeholder-gray-400") #{inputs ? inputs.description : ''}  
+                span(class="text-red-500") #{(errors.inputErrors.description) ? errors.inputErrors.description.msg : ''}
+ 
+            div(id="location-info" class="space-y-4")
+                h3(class="text-lg leading-6 font-medium text-gray-200") Location Info
+                p(class="text-gray-400") Select the property location
+                
+                div(id="map" class="h-96 space-y-4")
+
+                div(class="text-gray-400 h-16")
+                    p Curent Location:
+                        |
+                        span(id="address" class="font-semibold text-gray-200") 
+                            |#{`${inputs ? inputs.full_address : 'Empty'}`}
+                    span(class="text-red-500") #{errors.inputErrors.full_address ? errors.inputErrors.full_address.msg : ''}
+                div
+                    div
+                        div
+                            input(type="hidden" name="full_address" id="full_address", value=(inputs ? inputs.full_address : ''))
+                            input(type="hidden" name="latitude" id="latitude", value=(inputs ? inputs.latitude : null))
+                            input(type="hidden" name="longitude" id="longitude", value=(inputs ? inputs.longitude : null))
+                       
+            div(class="flex justify-end")
+                input(type="submit" value="Create" class="p-4 bg-yellow-500 hover:bg-yellow-600 hover:cursor-pointer text-white rounded-xl")
+
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script(src="/js/maps.js") 

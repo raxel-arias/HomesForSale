@@ -1,0 +1,11 @@
+extends ./mail-head
+
+block content
+    h1(class="text-4xl font-bold text-center") New Account
+    
+    p 
+        | Hi, 
+        span(class="text-blue-600 font-bold") #{username}
+        | , to activate the account you need to click in the next link. If you have not created an account, ignore this.
+
+    a(href=`${url}` class="mx-auto p-4 bg-orange-500 text-white text-centers") Activate the Account

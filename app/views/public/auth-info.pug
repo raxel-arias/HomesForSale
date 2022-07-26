@@ -1,0 +1,11 @@
+extends ../layouts/auth
+
+block content
+    div(class="my-2 text-center") 
+        h3(class="text-4xl") #{(info.msg) ? 'Success' : 'Failed'}
+        div(class=`py-1 ${(info.msg) ? 'bg-green-500' : 'bg-red-500'}`)
+    div(class="my-2 text-center")
+        p(class="text-2xl") #{info.msg || (errors ? errors.requestError.msg : '')}
+    div(class="my-2 md:flex justify-between text-orange-500 font-bold text-xl")
+        a(href="/auth-view/login" class="block hover:text-orange-700") Back to Login
+        a(href="/auth-view/signup" class="block hover:text-orange-700") Back to SignUp

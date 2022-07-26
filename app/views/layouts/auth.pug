@@ -1,0 +1,33 @@
+doctype html
+html(lang="en")
+    head
+        include ../partials/head
+    body.min-h-screen.bg-gray-50
+        header(class="text-center mt-5 flex justify-center")
+            img(src="/favicon.png", alt="Icon" class="w-8")
+            h1(class="text-4xl") HomesFor
+                span(class="font-bold text-orange-500") Sale
+
+        main(class="mx-auto container my-10 px-2 xl:w-4/6" autocomplete="false")
+            if (Object.keys(errors.requestError).length)
+                div(class="mx-auto py-2 bg-red-500 w-3/4 text-white text-center")
+                    p(class="text-xl fade") #{errors.requestError.msg || 'Test'}
+            if (Object.keys(info).length)
+                div(class="mx-auto py-2 bg-green-500 w-3/4 text-white text-center")
+                    p(class="text-xl fade") #{info.msg|| 'Test'}
+            div(class="md:flex items-center")
+
+                div(class="md:w-1/2 fade text-center md:text-left")
+                    h2(class="text-5xl font-bold text-orange-500") #{title}
+                    p(class="text-3xl font-semibold text-gray-500") #{description}
+
+                div(class="md:w-1/2 shadow-xl p-4 fade")
+                    block content
+        footer(class="fixed bottom-0 left-0 right-0 text-center")
+            p(class="mb-2.5 text-gray-500") 
+                | Raxel Arias ©
+                |
+                span(id="current-year") 2000
+                |, all rights reserved
+
+        script(src="/js/index.js") 

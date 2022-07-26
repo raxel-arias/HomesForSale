@@ -1,0 +1,33 @@
+*, *::after, *::before {
+    transition: all .2s ease-in;
+}
+      
+#app-body {
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url('../img/body-bg.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+#add-new-property {
+    background-color: rgba(0, 0, 0, .5);
+}
+
+#add-new-property:hover, #add-new-property-form {
+    background-color: rgba(0, 0, 0, .8)
+}
+
+.fade {
+    animation: fade-in 1s;
+}
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

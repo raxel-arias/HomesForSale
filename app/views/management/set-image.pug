@@ -1,0 +1,16 @@
+extends ../layouts/app
+
+block styles
+    //css styles for dropzone
+    link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/dropzone.css")
+    meta(name="csrf-token" content=csrfToken)
+block content
+    p(class="text-center text-2xl text-gray-200") #{property.title}
+    div(class="mx-auto w-11/12 md:w-1/2 my-2.5")
+        form(id="image" action=`/properties/set-image/${property.id_property}` method="POST" class="dropzone my-2.5")
+            input(type="hidden" name="_csrf" value=csrfToken)
+
+        div(class="flex justify-end")
+            button(id="set-image" class="block w-full md:inline-block md:w-auto p-4 bg-blue-500 hover:bg-blue-600 hover:cursor-pointer text-gray-200") Set Image
+block scripts
+    script(src="/js/dropImage.js")
