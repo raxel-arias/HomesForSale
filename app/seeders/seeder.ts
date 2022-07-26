@@ -1,4 +1,4 @@
-import { exit } from 'node:process';
+import {exit} from 'node:process';
 import { DB } from '../config/connection';
 
 import {
@@ -8,31 +8,30 @@ import {
     PropertiesModel
 } from '../models/models.module';
 
-import { CATEGORIES } from './categories.data';
-import { generateUsersData } from './users.data';
+import { CATEGORIES } from './data/categories.data';
+import { generateUsersData } from './data/users.data';
 
 import { User } from '../interfaces/models/models.interface';
 
-const generateData = async () => {
+const importData = async () => {
     try {
         await DB.authenticate();
 
         await DB.sync();
 
-        //Generating USERS DATA
-        const USERS: User[] = await generateUsersData();        
+        const USERS: User[] = await generateUsersData();
 
         await Promise.all([
             CategoriesModel.bulkCreate(CATEGORIES),
             UsersModel.bulkCreate(USERS)
-        ]); 
-        
+        ]);
+
         console.log('Generated Data to CATEGORIES Schema');
         console.log('Generated Data to USERS Schema');
 
         exit(0);
     } catch (error: any) {
-        console.log(error);
+        console.error(error);
         exit(1);
     }
 }
@@ -50,20 +49,20 @@ const deleteData = async () => {
         //]);
         //console.log('Deleted Data from CATEGORIES Schema');
 
-        //Erase all Database DATA
         await DB.sync({force: true});
-        console.log('All DATABASE DATA ERASED SUCCESSFULLY');
+        console.log('ALL DATABASE DATA HAS BEEN DELETED SUCCESSFULLY');
 
         exit(0);
     } catch (error: any) {
-        console.log(error);
+        console.error(error);
         exit(1);
     }
 }
 
-//Detect Import flag
-if (process.argv.some(flag => flag === '-i')) {    
-    generateData();
+//Detect import glag
+
+if (process.argv.some(flag => flag === '-i')) {
+    importData();
 }
 
 if (process.argv.some(flag => flag === '-d')) {
