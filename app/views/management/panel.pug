@@ -8,12 +8,15 @@ block content
                 a(href="/me/create-property" class="rounded-xl shadow-2xl bg-green-600 hover:bg-green-500 hover:cursor-pointer p-2 block md:inline-block text-white") New Property
 
         div(class="my-5 mx-2.5 border-gray-400 border-2 overflow-auto p-2 h-96 shadow-2xl")
-            table(class="table-auto border-collapse w-11/12 mx-auto")
-                thead(class="sticky -top-2 bg-gray-100")
-                    tr(class="") 
-                        th() ID
-                        th Title
-                        th Pic
-                        th Short Description
-                        th Price
-                tbody(class="text-center")
+            if (propertiesList.length)
+                table(class="table-auto border-collapse w-11/12 mx-auto")
+                    thead(class="sticky -top-2 bg-gray-100")
+                        tr(class="") 
+                            th() ID
+                            th Title
+                            th Pic
+                            th Short Description
+                            th Price
+                    tbody(class="text-center")
+            else
+                strong(class="text-xl text-gray-200 text-center mx-auto block") Properties List Empty
