@@ -67,6 +67,7 @@ export const ShowSetImageView = async (req: Request, res: Response): Promise<voi
         subtitle: 'Setting Image',
         property,
         user,
+        hostname: 'http://' + req.headers.host,
 
         errors,
         info: requestInfo,
