@@ -60,7 +60,7 @@ export const ValidatePropertyExistence = async (req: Request, res: Response, nex
 
 export const SetImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const property: Property = <Property>res.locals.property;
-
+    
     try {
         const data: PropertyImageSetting = {
             id_property: property.id_property!,
@@ -71,7 +71,7 @@ export const SetImage = async (req: Request, res: Response, next: NextFunction):
 
         req.flash('req-info', response);
 
-        next();
+        res.json({msg: 'Image updated successfully'}).status(200);
     } catch (error: any) {
         req.flash('req-error', error);
 
