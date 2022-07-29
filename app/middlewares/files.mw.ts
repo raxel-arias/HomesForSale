@@ -32,10 +32,11 @@ const fileStorage: multer.StorageEngine = multer.diskStorage({
                 });
             })
         }
-
+        
         callback(null, PATH);
     },
     filename: (req: Request, file: Express.Multer.File, callback: (error: Error | null, destination: string) => void) => {
+       
         callback(null, Auth.GenToken() + path.extname(file.originalname));
     }
 });
