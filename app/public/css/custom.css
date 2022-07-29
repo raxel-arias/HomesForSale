@@ -4,7 +4,7 @@
       
 #app-body {
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.50), rgba(0, 0, 0, 0.50)), url('../img/body-bg.jpg');
-    background-position: center center;
+    background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;
@@ -19,7 +19,7 @@
 }
 
 .fade {
-    animation: fade-in 1s;
+    animation: fade-in .5s;
 }
 
 @keyframes fade-in {

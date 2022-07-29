@@ -19,7 +19,7 @@ const fileStorage: multer.StorageEngine = multer.diskStorage({
         const id_user: string = req.user.id_user!.toString();
         const {id_property} = req.params;
 
-        const PATH: string = path.join(__dirname, '../../server', id_user, 'uploads');
+        const PATH: string = path.join(__dirname, '../public/img/server', id_user, 'uploads');
 
         if (!fs.existsSync(PATH)) {
             fs.mkdirSync(PATH, {recursive: true});
