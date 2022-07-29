@@ -14,6 +14,7 @@ PropertiesModel.hasOne(LocationsModel, {
 });
 
 PropertiesModel.belongsTo(UsersModel, {
+    //property vendor = id_user on Users schema
     foreignKey: 'vendor'
 });
 
