@@ -25,14 +25,22 @@ Dropzone.options.image = {
         const dropzone = this;
 
         html_input_setImage.addEventListener('click', () => {
-            dropzone.processQueue();
+            try {
+                dropzone.processQueue(); 
+            } catch (error) {
+                console.error(error);
+            }
         });
 
         dropzone.on('queuecomplete', () => {
-            if (!dropzone.getActiveFiles().length) {
-                setTimeout(() => {
-                    window.location.href = '/me';
-                }, 1500);
+            try {
+                if (!dropzone.getActiveFiles().length) {
+                    setTimeout(() => {
+                        window.location.href = '/me';
+                    }, 600);
+                }
+            } catch (error) {
+                console.error(error);
             }
         });
     }   
