@@ -10,17 +10,23 @@ export const ShowMeView = async (req: Request, res: Response): Promise<void> => 
 
     const user: User = <User>req.user;
 
-    const propertiesList: Property[] = <Property[]>(<ResolveResponse> await new PropertyController().GetProperties(user.id_user!)).data.propertiesList;
+    try {
+        const propertiesList: Property[] = <Property[]>(<ResolveResponse> await new PropertyController().GetProperties(user.id_user!)).data.propertiesList;
+    
+        res.render('management/panel', {
+            title: 'My Panel',
+            subtitle: 'My Properties',
+            user,
+            propertiesList,
+    
+            errors: {requestError},
+            info: requestInfo
+        });
+    } catch (error: any) {
+        req.flash('req-error', error);
 
-    res.render('management/panel', {
-        title: 'My Panel',
-        subtitle: 'My Properties',
-        user,
-        propertiesList,
-
-        errors: {requestError},
-        info: requestInfo
-    });
+        res.redirect('/app/index');
+    }
 }
 
 //Form
@@ -34,19 +40,26 @@ export const ShowCreatePropertyView = async (req: Request, res: Response): Promi
   
     const user: User = <User>req.user;
     
-    const categoriesList = (await new CategoriesController().CategoriesList() as ResolveResponse).data.categoriesList;
+    try {
+        const {data: {categoriesList}} = <ResolveResponse> await new CategoriesController().CategoriesList();
+        
+        res.render('management/create-property', {
+            title: 'New Property',
+            subtitle: 'Creating Property',
+            categoriesList,
+            user,
     
-    res.render('management/create-property', {
-        title: 'New Property',
-        subtitle: 'Creating Property',
-        categoriesList,
-        user,
+            errors,
+            info: requestInfo,
+            inputs,
+            csrfToken: req.csrfToken(),
+        });
+        
+    } catch (error: any) {
+        req.flash('req-error', error);
 
-        errors,
-        info: requestInfo,
-        inputs,
-        csrfToken: req.csrfToken(),
-    });
+        res.redirect('/app/index');
+    }
 }
 
 //Form
