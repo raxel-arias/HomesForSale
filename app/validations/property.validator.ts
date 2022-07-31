@@ -53,11 +53,4 @@ export class PropertyValidator {
             })
             .toInt()
     ];
-
-    public static CreatePropertySanitization: ValidationChain[] = [
-        check('title')
-            .trim()
-            .escape()
-            .toUpperCase()
-    ];
 }
