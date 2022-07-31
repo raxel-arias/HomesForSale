@@ -25,4 +25,37 @@ export class LocationController {
             }
         });
     }
+
+    public GetLocation(id_property: string): Promise<ResolveResponse | RejectResponse> {
+        return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
+            try {
+                const locationFound = await LocationsModel.findOne({
+                    where: {
+                        property: id_property
+                    }
+                });
+
+                if (!locationFound) {
+                    reject({
+                        msg: 'Location not found',
+                        error: false
+                    });
+                    return;
+                }
+
+                resolve({
+                    msg: 'Location obtained',
+                    data: {
+                        locationFound
+                    }
+                });
+            } catch (error: any) {
+                reject({
+                    msg: 'An error has occurred while getting location',
+                    error: true,
+                    errorDetails: error
+                });
+            }
+        });
+    }
 }
