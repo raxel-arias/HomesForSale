@@ -1,8 +1,9 @@
 import { Op } from "sequelize";
-import { PropertiesModel } from "../../models/Properties.model";
+import { PropertiesModel } from "../../models/models.module";
+import { CategoriesModel } from "../../models/models.module";
+import { LocationController } from "../locations/locations.controller";
 import { ResolveResponse, RejectResponse } from "../../interfaces/response.interface";
 import { PropertyCreation, PropertyFinding, PropertyImageSetting } from "../../interfaces/controllers/property.interface";
-import { LocationController } from "../locations/locations.controller";
 
 export class PropertyController {
     constructor() {}
@@ -41,7 +42,8 @@ export class PropertyController {
                 const propertiesList = await PropertiesModel.findAll({
                     where: {
                         vendor: id_user
-                    }
+                    },
+                    include: [{model: CategoriesModel, as: 'category'}]
                 });
 
                 resolve({
