@@ -4,3 +4,5 @@ export interface LocationCreation {
     latitude: string,
     longitude: string
 }
+
+export interface LocationModification extends LocationCreation {};
