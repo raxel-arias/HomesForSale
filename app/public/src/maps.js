@@ -43,9 +43,7 @@
                 //Popup to see the pin location
                 marker.bindPopup(result.address.LongLabel);
 
-                if (html_span_address) {
-                    html_span_address.textContent = result.address.LongLabel;
-                }
+                html_span_address.textContent = result.address.LongLabel;
 
                 html_input_fullAddress.value = result.address.LongLabel;
                 html_input_latitude.value = lat;
@@ -55,6 +53,8 @@
 
         const userCoords = await getUserLocation();
     
+        html_span_address.textContent = html_input_fullAddress.value || 'Empty';
+
         if (!html_input_fullAddress.value) {
             setLocation(userCoords.latitude, userCoords.longitude);
         }
