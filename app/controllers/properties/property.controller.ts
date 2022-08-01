@@ -61,6 +61,32 @@ export class PropertyController {
             }
         });
     }
+
+    public GetPublicProperties(): Promise<ResolveResponse | RejectResponse> {
+        return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
+            try {
+                const propertiesList = await PropertiesModel.findAll({
+                    where: {
+                        published: 1
+                    },
+                    include: [{model: CategoriesModel, as: 'category'}]
+                });
+
+                resolve({
+                    msg: 'Showing public properties',
+                    data: {
+                        propertiesList
+                    }
+                });
+            } catch (error: any) {
+                reject({
+                    msg: 'An error has occurred while getting public properties',
+                    error: true,
+                    errorDetails: error
+                });
+            }
+        });
+    }
     
     public GetProperty(params: PropertyFinding): Promise<ResolveResponse | RejectResponse> {
         return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
