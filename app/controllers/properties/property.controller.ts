@@ -3,7 +3,7 @@ import { PropertiesModel } from "../../models/models.module";
 import { CategoriesModel } from "../../models/models.module";
 import { LocationController } from "../locations/locations.controller";
 import { ResolveResponse, RejectResponse } from "../../interfaces/response.interface";
-import { PropertyCreation, PropertyFinding, PropertyImageSetting } from "../../interfaces/controllers/property.interface";
+import { PropertyCreation, PropertyFinding, PropertyImageSetting, PropertyModification } from "../../interfaces/controllers/property.interface";
 
 export class PropertyController {
     constructor() {}
@@ -29,6 +29,47 @@ export class PropertyController {
             } catch (error: any) {
                 reject({
                     msg: 'An error has occurred during property creation',
+                    error: true,
+                    errorDetails: error
+                });
+            }
+        });
+    }
+
+    public UpdateProperty(propertyModification: PropertyModification): Promise<ResolveResponse | RejectResponse> {
+        return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
+            try {
+                const propertyFound = await PropertiesModel.findOne({
+                    where: {
+                        id_property: propertyModification.id_property
+                    }
+                });
+
+                if (!propertyFound) {
+                    reject({
+                        msg: 'Property not found',
+                        error: false
+                    });
+                    return;
+                }
+
+                const {data: {locationFound}} = <ResolveResponse> await new LocationController().GetLocation(propertyModification.id_property!);
+
+                let {id_property, location, ...propertyObj} = propertyModification;
+                
+                Object.assign(propertyFound, propertyObj);
+                Object.assign(locationFound, location);
+
+                await propertyFound.save();
+                await locationFound.save();
+
+                resolve({
+                    msg: 'Property updated successfully'
+                });
+
+            } catch (error: any) {
+                reject({
+                    msg: 'An error has occurred during property modification',
                     error: true,
                     errorDetails: error
                 });
