@@ -119,7 +119,7 @@ export const ValidatePropertyExistence = async (req: Request, res: Response, nex
 }
 
 export const SetImage = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const property: Property = <Property>res.locals.property;
+    const property: Property = <Property> res.locals.property;
     
     try {
         const data: PropertyImageSetting = {
