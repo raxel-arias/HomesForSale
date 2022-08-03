@@ -138,3 +138,17 @@ export const SetImage = async (req: Request, res: Response, next: NextFunction):
         res.redirect(`/me/property/set-image/${property.id_property}`);
     }
 }
+
+export const ChangePropertyStatus = async (req: Request, res: Response): Promise<void> => {
+    const property: Property = <Property> res.locals.property;
+
+    try {
+        const response = <ResolveResponse> await new PropertyController().ChangePropertyPublishedStatus(property.id_property!);
+
+        res.json(response).status(200);
+    } catch (error: any) {
+        req.flash('req-error', error);
+
+        res.redirect('/me');
+    }
+}
