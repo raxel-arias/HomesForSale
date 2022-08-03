@@ -1,8 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import { Result, ValidationError, validationResult } from "express-validator";
 import { PropertyController } from "../../controllers/properties/property.controller";
-import { PropertyCreation, PropertyImageSetting } from "../../interfaces/controllers/property.interface";
-import { User } from "../../interfaces/models/models.interface";
+import { PropertyCreation, PropertyImageSetting, PropertyModification } from "../../interfaces/controllers/property.interface";
+import { Location, User } from "../../interfaces/models/models.interface";
 import { Property } from '../../interfaces/models/models.interface';
 import { ResolveResponse } from "../../interfaces/response.interface";
 
@@ -27,7 +27,7 @@ export const CreateProperty = async (req: Request, res: Response): Promise<void>
         const property: PropertyCreation = <PropertyCreation>req.body;
         property.vendor = Number(user.id_user);
         
-        const response = <ResolveResponse>(await new PropertyController().CreateProperty(property));
+        const response = <ResolveResponse> await new PropertyController().CreateProperty(property);
 
         res.redirect(`/me/property/set-image/${response.data.propertyCreated.id_property}`);
     } catch (error: any) {
