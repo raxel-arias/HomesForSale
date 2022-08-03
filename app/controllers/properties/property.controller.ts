@@ -57,6 +57,7 @@ export class PropertyController {
 
                 let {id_property, location, ...propertyObj} = propertyModification;
                 
+                //First arg = originalData, Second arg = New data to fill,
                 Object.assign(propertyFound, propertyObj);
                 Object.assign(locationFound, location);
 
