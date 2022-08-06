@@ -61,6 +61,8 @@ export class PropertyController {
                 Object.assign(propertyFound, propertyObj);
                 Object.assign(locationFound, location);
 
+                //Also we can use objectFoundModel.set(newData) if we want to update
+
                 await propertyFound.save();
                 await locationFound.save();
 
