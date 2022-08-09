@@ -70,9 +70,9 @@ export class JWT {
             const {_homesforsale} = req.cookies;
 
             if (!_homesforsale) {
-                res.redirect('/auth-view/login');
+                if (!res.locals.isPublic) return res.redirect('/auth-view/login');
 
-                return;
+                return next();
             }
 
             const {id_user}: JWTData = <JWTData>jwt.verify(_homesforsale, <string>process.env.JWT_SECRET);
