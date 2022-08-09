@@ -7,5 +7,11 @@ declare module 'express-serve-static-core' {
         flash: any,
         user: User
     }
+
+    interface Response {
+        locals: {
+            isPublic?: boolean
+        }
+    }
 }
 
