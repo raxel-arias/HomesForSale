@@ -1,3 +1,5 @@
+import path from 'path';
+import fs from 'node:fs';
 import { Request, Response, NextFunction } from "express";
 import { Result, ValidationError, validationResult } from "express-validator";
 import { PropertyController } from "../../controllers/properties/property.controller";
@@ -147,8 +149,26 @@ export const ChangePropertyStatus = async (req: Request, res: Response): Promise
 
         res.json(response).status(200);
     } catch (error: any) {
-        req.flash('req-error', error);
+        res.json(error).status(500);
+    }
+}
 
-        res.redirect('/me');
+export const DeleteProperty = async (req: Request, res: Response): Promise<void> => {
+    const user = <User> req.user;
+    const property: Property = <Property> res.locals.property;
+
+    try {
+        const response = <ResolveResponse> await new PropertyController().DeleteProperty(property.id_property!);
+
+        const PATH: string = path.join(__dirname, '../../public/img/server', user.id_user?.toString()!, 'uploads', property.id_property!);
+
+        fs.rm(PATH, {recursive: true}, (err) => {
+            if (err) res.json(err).status(500);
+            return;
+        });
+
+        res.json(response).status(200);
+    } catch (error: any) {
+        res.json(error).status(500);
     }
 }
