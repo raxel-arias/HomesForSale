@@ -102,3 +102,9 @@ export const ShowSetNewPasswordView = async (req: Request, res: Response, next: 
         csrfToken: req.csrfToken()
     }); 
 }
+
+export const SetViewAsPublic = async (req: Request, res: Response, next: NextFunction) => {
+    res.locals.isPublic = true;
+
+    next();
+}
