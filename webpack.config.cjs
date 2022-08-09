@@ -6,7 +6,8 @@ const prodConfig = {
     entry: {
         index: path.join(__dirname, '/app/public/src/index.js'),
         maps: path.join(__dirname, '/app/public/src/maps.js'),
-        dropImage: path.join(__dirname, '/app/public/src/dropImage.js')
+        dropImage: path.join(__dirname, '/app/public/src/dropImage.js'),
+        panel: path.join(__dirname, '/app/public/src/panel.js')
     },
     output: {
         filename: '[name].js',
@@ -29,7 +30,8 @@ const devConfig = {
     entry: {
         index: path.join(__dirname, '/app/public/src/index.js'),
         maps: path.join(__dirname, '/app/public/src/maps.js'),
-        dropImage: path.join(__dirname, '/app/public/src/dropImage.js')
+        dropImage: path.join(__dirname, '/app/public/src/dropImage.js'),
+        panel: path.join(__dirname, '/app/public/src/panel.js')
     },
     output: {
         filename: '[name].js',
