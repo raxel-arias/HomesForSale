@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { PropertiesModel } from "../../models/models.module";
+import { PropertiesModel, UsersModel } from "../../models/models.module";
 import { CategoriesModel } from "../../models/models.module";
 import { LocationController } from "../locations/locations.controller";
 import { ResolveResponse, RejectResponse } from "../../interfaces/response.interface";
@@ -125,6 +125,51 @@ export class PropertyController {
             } catch (error: any) {
                 reject({
                     msg: 'An error has occurred while getting public properties',
+                    error: true,
+                    errorDetails: error
+                });
+            }
+        });
+    }
+
+    public GetPublicProperty(id_property: string): Promise<ResolveResponse | RejectResponse> {
+        return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
+            try {
+                const propertyFound = await PropertiesModel.findOne({
+                    where: {
+                        id_property,
+                        published: 1
+                    },
+                    include: [
+                        CategoriesModel,
+                        {
+                            model: UsersModel,
+                            attributes: [
+                                'id_user',
+                                'name',
+                                'email'
+                            ]
+                        }
+                    ]
+                });
+
+                if (!propertyFound) {
+                    reject({
+                        msg: 'Property not found',
+                        error: false
+                    }); 
+                    return;
+                }
+
+                resolve({
+                    msg: 'Property found',
+                    data: {
+                        propertyFound
+                    }
+                });
+            } catch (error: any) {
+                reject({
+                    msg: 'An error has occurred while getting public property information',
                     error: true,
                     errorDetails: error
                 });
