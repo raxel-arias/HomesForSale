@@ -1,4 +1,4 @@
-import { Property, Location } from "../models/models.interface";
+import { Property, Location, User, Category } from "../models/models.interface";
 export interface PropertyCreation {
     title: string,
     category_type: number,
@@ -17,6 +17,11 @@ export interface PropertyCreation {
 export interface PropertyFinding {
     id_user: number,
     id_property: string
+}
+
+export interface PropertyFound extends Property {
+    user: User,
+    category: Category
 }
 
 export interface PropertyImageSetting {
