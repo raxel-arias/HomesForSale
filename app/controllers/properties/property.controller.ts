@@ -284,4 +284,35 @@ export class PropertyController {
             }
         });
     }
+
+    public DeleteProperty(id_property: string): Promise<ResolveResponse | RejectResponse> {
+        return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
+            try {
+                const propertyDeleted = await PropertiesModel.destroy({
+                    where: {
+                        id_property
+                    }
+                });
+
+                if (!propertyDeleted) {
+                    reject({
+                        msg: 'Property not found',
+                        error: false
+                    });
+
+                    return;
+                }
+
+                resolve({
+                    msg: 'Property Deleted'
+                });
+            } catch (error: any) {
+                reject({
+                    msg: 'An error has occurred while deleting property',
+                    error: true,
+                    errorDetails: error
+                });
+            }
+        });
+    }
 }
