@@ -2,8 +2,8 @@ doctype html
 html(lang="en")
     head
         include ../partials/head
-    body(id="app-body")
-        header(class="text-center mb-5 bg-gray-800")
+    body(id=!index ? 'app-body' : '')
+        header(class=`text-center bg-gray-800 ${!hideSubtitle ? 'mb-5' : ''}`)
             div(class="flex items-center container mx-auto justify-between p-2")
                 div(class="flex items-center gap-2")
                     a(href="/app/index")
@@ -12,12 +12,16 @@ html(lang="en")
                         | Welcome,
                         |
                         a(href="/me") 
-                            strong(class="text-orange-400 hover:text-orange-500") #{user.name || 'Empty'}
-                div
-                    a(href="/me/logout" class="p-3 bg-red-500 hover:bg-red-400 text-white rounded-xl shadow-2xl") Logout
+                            strong(class="text-orange-400 hover:text-orange-500") #{user ? user.name : 'Guest'}
+                if (user)
+                    div
+                        a(href="/me/logout" class="p-3 bg-red-500 hover:bg-red-400 text-white rounded-xl shadow-2xl") Logout
+                if (!user)
+                    div
+                        a(href="/auth-view/signup" class="block md:inline-block p-2 rounded-xl bg-orange-400 hover:bg-orange-500 text-white") Create an Account
 
 
-        main(class="my-5")
+        main(class=`${!hideSubtitle ? "my-5" : ''}`)
             if (errors && Object.keys(errors.requestError).length)
                 div(class="mx-auto py-2 bg-red-500 w-3/4 text-white text-center")
                     p(class="text-xl fade") #{errors.requestError.msg}
@@ -25,7 +29,8 @@ html(lang="en")
                 div(class="mx-auto py-2 bg-green-500 w-3/4 text-white text-center")
                     p(class="text-xl fade") #{info.msg}
 
-            h1(class="my-5 font-semibold text-4xl text-center text-gray-300") #{subtitle}
+            if (!hideSubtitle)
+                h1(class="my-5 font-semibold text-4xl text-center text-gray-300") #{subtitle}
             div(class="fade")
                 block content
 
