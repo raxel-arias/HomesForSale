@@ -7,7 +7,7 @@ block styles
 block content
     p(class="text-center text-2xl text-gray-200") #{property.title}
     div(class="mx-auto w-11/12 md:w-1/2 my-2.5")
-        form(id="image" action=`/properties/set-image/${property.id_property}` method="POST" class="dropzone my-2.5")
+        form(id="image" action=`${hostname}/properties/set-image/${property.id_property}` method="POST" class="dropzone my-2.5")
             input(type="hidden" name="_csrf" value=csrfToken)
 
         div(class="flex justify-end")
