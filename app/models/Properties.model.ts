@@ -51,4 +51,6 @@ export const PropertiesModel = DB.define<Property & Model<Property, Property>>('
         type: sequelize.INTEGER,
         allowNull: false
     }
+},{
+    timestamps: true
 });
