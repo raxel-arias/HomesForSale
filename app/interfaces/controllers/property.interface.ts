@@ -19,6 +19,15 @@ export interface PropertyFinding {
     id_property: string
 }
 
+export interface SearchParams {
+    title?: string,
+    category_type?: number,
+    minPrice?: number,
+    maxPrice?: number,
+    bedrooms?: number,
+    bathrooms?: number,
+    parkings?: number
+}
 export interface PropertyFound extends Property {
     user: User,
     category: Category
