@@ -1,11 +1,11 @@
-export const filterArrayByObjectEntries = (original: Array<any>, newArray: Array<any>, key: string) => {
+const filterArrayByObjectEntries = (original: Array<any>, newArray: Array<any>, key: string) => {
     original.forEach((element: any) => {
         if (!newArray.some((existentElement: any) => element[key] === existentElement[key])) newArray.push(element);
     });
     return newArray;
 }
 
-export const findArrayObjectByKey = (array: Array<any>, key: string, value: any, specific?: any) => {
+const findArrayObjectByKey = (array: Array<any>, key: string, value: any, specific?: any) => {
     const object = array[array.findIndex((el: any) => el[key] === value)];
 
     if (!object) return null;
