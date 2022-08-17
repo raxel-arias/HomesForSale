@@ -172,3 +172,37 @@ export const DeleteProperty = async (req: Request, res: Response): Promise<void>
         res.json(error).status(500);
     }
 }
+
+//API Request
+export const GetPublicProperties = async (req: Request, res: Response): Promise<void> => {
+    const {
+        category,
+        minPrice,
+        maxPrice,
+        bedrooms,
+        bathrooms,
+        parkings,
+        title
+    } = req.query;
+
+    const queryParamsRegex = /^[0-9]$/;
+
+    if (category && !queryParamsRegex.test(<string> category)) {
+        return res.redirect('/app/index');
+    }
+    
+    try {
+        const response = <ResolveResponse> await new PropertyController().GetPublicProperties({
+            ...(category && {category_type: Number(category)}),
+            ...(minPrice && {minPrice: Number(minPrice)}),
+            ...(maxPrice && {maxPrice: Number(maxPrice)}),
+            ...(bedrooms && {bedrooms: Number(bedrooms)}),
+            ...(bathrooms && {bathrooms: Number(bathrooms)}),
+            ...(parkings && {parkings: Number(parkings)}),
+            ...(title && {title: <string> title})
+        });
+        res.json(response).status(200);
+    } catch (error: any) {
+        res.json(error).status(400);
+    }
+}
