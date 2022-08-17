@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
+import { CategoriesController } from "../../../controllers/categories/categories.controller";
 import { PropertyController } from "../../../controllers/properties/property.controller";
 import { PropertyFound } from "../../../interfaces/controllers/property.interface";
-import { Property, User } from '../../../interfaces/models/models.interface';
+import { Category, Property, User } from '../../../interfaces/models/models.interface';
 import { ResolveResponse } from "../../../interfaces/response.interface";
 
 export const ShowIndexView = async (req: Request, res: Response): Promise<void> => {
@@ -9,16 +10,37 @@ export const ShowIndexView = async (req: Request, res: Response): Promise<void> 
 
     let requestError: any = req.flash('req-error')[0] || {};
     let requestInfo: any = req.flash('req-info')[0] || {};
+
+    const {
+        category,
+        title
+    } = req.query;
+
+    const queryParamsRegex = /^[0-9]$/;
+
+    if (category && !queryParamsRegex.test(<string> category)) {
+        return res.redirect('/app/index');
+    }
     
     try {
-        const publicPropertiesList: Property[] = <Property[]>(<ResolveResponse> await new PropertyController().GetPublicProperties()).data.propertiesList;
-        
+        const publicPropertiesList: Property[] = <Property[]>(<ResolveResponse> await new PropertyController().GetPublicProperties(
+            {
+                ...(category && {category_type: Number(category)}),
+                ...(title && {title: <string> title})
+            }
+            )).data.propertiesList;
+        const categoriesList: Category[] = <Category[]>(<ResolveResponse> await new CategoriesController().CategoriesList()).data.categoriesList;
+
+        const categoryTitle = categoriesList.filter(cat => cat.id_category == category);
+
         res.render('public-view/index', {
             title: 'Index',
-            subtitle: 'HomesForSale',
+            subtitle: categoryTitle && categoryTitle[0] ? categoryTitle[0].name : 'Properties',
             user,
             publicPropertiesList,
+            categoriesList,
             index: true,
+            indexPage: true,
     
             errors: {requestError},
             info: requestInfo
