@@ -48,8 +48,8 @@
         //     queryParamBuilder = queryParamBuilder.substring(0, queryParamBuilder.length-1);
         // }
 
-        // const url = `http://${location.host}/properties/public/list${queryParamBuilder.length > 1 ? queryParamBuilder : ''}`;
-        const url = `http://${location.host}/properties/public/list?${paramObj && paramObj.length > 1 ? paramObj : ''}`;
+        // const url = `https://${location.host}/properties/public/list${queryParamBuilder.length > 1 ? queryParamBuilder : ''}`;
+        const url = `https://${location.host}/properties/public/list?${paramObj && paramObj.length > 1 ? paramObj : ''}`;
 
         const response = await fetch(url);
         const {data: {propertiesList}} = await response.json();

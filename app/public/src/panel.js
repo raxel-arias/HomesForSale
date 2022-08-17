@@ -18,7 +18,7 @@ html_buttons_publish_array.forEach(html_btn_publishProperty => {
         }
     
         try {
-            const response = await fetch(`http://${location}/properties/change-status/${property_id}`, settings);
+            const response = await fetch(`https://${location}/properties/change-status/${property_id}`, settings);
     
             ev.target.classList.toggle('bg-green-500');
             ev.target.classList.toggle('bg-gray-400');
@@ -45,7 +45,7 @@ html_buttons_delete_array.forEach(html_btn_deleteProperty => {
         }
 
         try {
-            const response = await fetch(`http://${location}/properties/delete/${property_id}`, settings);
+            const response = await fetch(`https://${location}/properties/delete/${property_id}`, settings);
 
             window.location.reload();
         } catch (error) {

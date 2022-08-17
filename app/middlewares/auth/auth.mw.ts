@@ -27,7 +27,7 @@ export const SignUp = async (req: Request, res: Response): Promise<void> => {
 
         const response = await new AuthController().SignUp(user) as ResolveResponse;
 
-        const url: string = `http://${req.headers.host}/auth/activation/${response.data.token}?activation=true"`;
+        const url: string = `https://${req.headers.host}/auth/activation/${response.data.token}?activation=true"`;
 
         await SendEmail({
             type: 'account-activation',
@@ -115,7 +115,7 @@ export const RecoverAccount = async (req: Request, res: Response): Promise<void>
 
         const response = await new AuthController().RecoverAccount(user) as ResolveResponse;
 
-        const url: string = `http://${req.headers.host}/auth/reset-password/${response.data.token}?recovery=true">http://${req.headers.host}/auth/reset-password/${response.data.token}?recovery=true`;
+        const url: string = `https://${req.headers.host}/auth/reset-password/${response.data.token}?recovery=true`;
 
         await SendEmail({
             type: 'reset-password',
