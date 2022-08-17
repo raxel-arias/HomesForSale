@@ -1,0 +1,5 @@
+mixin categoriesList(categoriesList, path, alwaysFlexCol)
+    nav(class=`container mx-auto flex flex-col justify-center text-center ${alwaysFlexCol ? '' : 'md:flex-row'}`)
+        a(href=`${path}` class="w-full p-2 bg-orange-400 hover:bg-orange-500 text-gray-50") ALL
+        each category in categoriesList
+            a(href=`${path}?category=${category.id_category}` class="w-full p-2 bg-orange-400 hover:bg-orange-500 text-gray-50") #{category.name}
