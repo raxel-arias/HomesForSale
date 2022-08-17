@@ -145,7 +145,7 @@ export class PropertyController {
                 });
             } catch (error: any) {
                 reject({
-                    msg: 'An error has occurred while getting properties',
+                    msg: 'An error has occurred while getting user properties',
                     error: true,
                     errorDetails: error
                 });
