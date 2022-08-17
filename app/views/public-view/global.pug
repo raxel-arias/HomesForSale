@@ -1,0 +1,33 @@
+extends ../layouts/app
+
+block styles 
+    meta(name="csrf-token" content=csrfToken)
+    
+    //css styles for leatflet
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+block content
+
+    div(class="hidden my-2.5 lg:flex md:flex-col gap-2 justify-center items-center container mx-auto")
+        div(class="md:flex")
+            div(class="flex flex-col border-2 border-gray-400 p-2")
+                label(for="categories") By Category
+                select(id="categories" class="p-2")
+                    option(value="null" selected disabled) --Select One--
+                    option(value="") All
+                    each category of categoriesList
+                        option(value=category.id_category) #{category.name}
+            div(class="flex flex-col border-2 border-gray-400 p-2")
+                label(for="minPrice") Min. Price
+                input(id="minPrice" type="number" placeholder="Min price" step=50000 class="p-2")
+            div(class="flex flex-col border-2 border-gray-400 p-2")
+                label(for="maxPrice") Max. Price
+                input(id="maxPrice" type="number" placeholder="Max price" step=50000 class="p-2")
+        button(id="search" class="py-2 bg-orange-400 hover:bg-orange-500 hover:shadow-md text-white font-medium w-32 rounded-xl") Search
+
+    div(id="map" class="min-h-screen space-y-4 relative w-5/6 md:w-3/5 mx-auto shadow-xl")
+block scripts
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script(src="/js/indexGlobalMap.js") 
