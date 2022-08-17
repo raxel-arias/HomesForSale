@@ -1,0 +1,61 @@
+include ../mixins/categories-list
+
+mixin navBar() 
+    div(class="navbar-menu relative hidden" style="z-index:2000")
+        div(class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto")
+            div(class="flex items-center mb-4")
+                a(class="flex mr-auto text-2xl leading-none gap-2" href="/")
+                    img(src="/favicon.png", alt="Icon" class="w-8")
+                    span(class="lg:hidden text-gray-800") HomesFor
+                        span(class="text-orange-500") Sale
+                button(class="navbar-close")
+                    svg(class="h-6 w-6 text-gray-400 cursor-pointer hover:text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor")
+                        path(stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12")
+            
+            span(class="block text-gray-500 text-xl mb-4")
+                | Welcome,
+                |
+                a(href="/me") 
+                    strong(class="text-orange-400 hover:text-orange-500") #{user ? user.name : 'Guest'}
+
+            if (indexPage)
+                h4(class="my-2.5 text-2xl font-semibold text-gray-500 text-center") Categories
+                +categoriesList(categoriesList, '/app/index', true)
+
+                div(class="my-2.5")
+                    div(class="w-full")
+                        a(href="/app/index/global" class="block text-center p-2 bg-green-500 hover:bg-green-600 text-white") View Global Map
+                        
+                    h4(class="my-2.5 text-2xl font-semibold text-gray-500 text-center") Searcher
+                    div(class="my-2.5 w-full")
+                        form(action="" class="gap-2")
+                            input(type="hidden" name="_csrf" value=csrfToken disabled)
+                            div(class="flex flex-col md:flex-row gap-2")
+                                input(type=text name="title" placeholder="Search by title" class="border-2 p-2 border-gray-400")
+                                input(type="submit" class="p-2 bg-orange-400 hover:bg-orange-500 text-white" value="Search")
+            if (searcher)
+                h4(class="my-2.5 text-2xl font-semibold text-gray-500 text-center") Map Searcher
+
+                div(class="my-2.5 flex flex-col gap-2 justify-center items-center container mx-auto")
+                    div(id="searcher")
+                        div(class="flex flex-col border-2 border-gray-400 p-2")
+                            label(for="categories__responsive") By Category
+                            select(id="categories__responsive" class="p-2")
+                                option(value="null" selected disabled) --Select One--
+                                option(value="") All
+                                each category of categoriesList
+                                    option(value=category.id_category) #{category.name}
+                        div(class="flex flex-col border-2 border-gray-400 p-2")
+                            label(for="minPrice__responsive") Min. Price
+                            input(id="minPrice__responsive" type="number" placeholder="Min price" step=50000 class="p-2")
+                        div(class="flex flex-col border-2 border-gray-400 p-2")
+                            label(for="maxPrice__responsive") Max. Price
+                            input(id="maxPrice__responsive" type="number" placeholder="Max price" step=50000 class="p-2")
+                    button(id="search__responsive" class="py-2 bg-orange-400 hover:bg-orange-500 hover:shadow-md text-white font-medium w-32 rounded-xl") Search
+            div(class="my-5 w-full")
+                if (user)
+                    div
+                        a(href="/auth/logout" class="block p-3 bg-red-500 hover:bg-red-400 text-white shadow-2xl text-center") Logout
+                if (!user)
+                    div(class="")
+                        a(href="/auth-view/signup" class="block md:inline-block p-3 bg-orange-400 hover:bg-orange-500 shadow-2xl text-white text-center") Create an Account
