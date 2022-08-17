@@ -1,4 +1,6 @@
 let html_span_currentYear = document.querySelector('#current-year') || false;
+let html_span_propertyPrice = document.querySelector('#property-price') || false;
+let html_span_propertyPrice__array = document.querySelectorAll('#card_image--price') || false;
 let html_input_price = document.querySelector('#price') || false;
 let html_input_nbathrooms = document.querySelector('#bathrooms') || false;
 let html_input_nbedrooms = document.querySelector('#bedrooms') || false;
@@ -8,6 +10,10 @@ let html_input_nparkings = document.querySelector('#parkings') || false;
     const NUM_REGEX = /\B(?!\.\d*)(?=(\d{3})+(?!\d))/g;
 
     if (html_span_currentYear) html_span_currentYear.textContent = new Date().getFullYear();
+
+    if (html_span_propertyPrice__array) html_span_propertyPrice__array.forEach(html_span_propertyPrice => html_span_propertyPrice.textContent = html_span_propertyPrice.textContent.replace(NUM_REGEX, ","));
+
+    if (html_span_propertyPrice) html_span_propertyPrice.textContent = html_span_propertyPrice.textContent.replace(NUM_REGEX, ",");
 
     if (html_input_price) {
         const html_div_propertyValue = document.querySelector('#property-value');
