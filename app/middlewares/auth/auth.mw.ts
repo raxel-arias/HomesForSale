@@ -90,6 +90,12 @@ export const Login = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+export const Logout = async (req: Request, res: Response): Promise<void> => {
+    res.clearCookie('_homesforsale', {httpOnly: true});
+
+    res.redirect('/auth-view/login');
+}
+
 export const RecoverAccount = async (req: Request, res: Response): Promise<void> => {
     try {
         let inputErrors: Record<string, ValidationError>;
