@@ -1,12 +1,28 @@
-import { Op } from "sequelize";
-import { PropertiesModel, UsersModel } from "../../models/models.module";
-import { CategoriesModel } from "../../models/models.module";
+import { Op, QueryTypes } from "sequelize";
+import { LocationsModel, PropertiesModel, UsersModel, CategoriesModel, MessagesModel } from "../../models/models.module";
 import { LocationController } from "../locations/locations.controller";
 import { ResolveResponse, RejectResponse } from "../../interfaces/response.interface";
-import { PropertyCreation, PropertyFinding, PropertyImageSetting, PropertyModification } from "../../interfaces/controllers/property.interface";
-
+import { PropertyCreation, PropertyFinding, PropertyImageSetting, PropertyModification, SearchParams } from "../../interfaces/controllers/property.interface";
+import { Pagination } from '../../interfaces/controllers/pagination.interface';
+import { GeneratePagination } from "../../utils/pagination.utils";
 export class PropertyController {
     constructor() {}
+
+    public GetPropertiesCounter(id_user: number): Promise<number> {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const count = await PropertiesModel.count({
+                    where: {
+                        vendor: id_user
+                    }
+                });
+
+                resolve(count);
+            } catch (error: any) {
+                reject(0);
+            }
+        });
+    }
 
     public CreateProperty(property: PropertyCreation): Promise<ResolveResponse | RejectResponse> {
         return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
