@@ -27,7 +27,7 @@ export const SignUp = async (req: Request, res: Response): Promise<void> => {
 
         const response = await new AuthController().SignUp(user) as ResolveResponse;
 
-        const url: string = `http://${req.headers.host}/auth/activation/${response.data.token}?activation=true">http://${req.headers.host}/auth/activation/${response.data.token}?activation=true`;
+        const url: string = `http://${req.headers.host}/auth/activation/${response.data.token}?activation=true"`;
 
         await SendEmail({
             type: 'account-activation',
