@@ -1,0 +1,60 @@
+extends ../layouts/app
+
+include ../mixins/categories-list
+
+block content
+    div(class="hidden lg:block")
+        +categoriesList(categoriesList, '/app/index')
+
+    div(class="hidden my-2.5 lg:flex items-center container mx-auto gap-2")
+        div(class="w-1/2 flex justify-center md:justify-end")
+            a(href="/app/index/global" class="text-center p-2 bg-green-500 hover:bg-green-600 text-white") View Global Map
+        div(class="w-1/2 flex justify-center md:justify-start")
+            form(action="" class="gap-2")
+                input(type="hidden" name="_csrf" value=csrfToken disabled)
+                div(class="flex flex-col md:flex-row gap-2")
+                    input(type=text name="title" placeholder="Search by title" class="border-2 p-2 border-gray-400")
+                    input(type="submit" class="p-2 bg-orange-400 hover:bg-orange-500 text-white" value="Search")
+    div(class="container mx-auto grid grid-cols-2 md:grid-cols-4 gap-4")
+        if (publicPropertiesList.length)
+            each property in publicPropertiesList
+                a(href=`/app/property/view/${property.id_property}` id="card" class="p-2 bg-gray-50 hover:bg-gray-100 hover:shadow-xl hover:cursor-pointer hover:scale-105")
+                    div(id="card__image" class="relative h-3/5")
+                        img(class="h-full w-full" src=`${property.image ? `/img/server/${property.vendor}/uploads/${property.id_property}/${property.image}` : '/img/unknow-house.jpg'}` alt=`Image from ${property.title}`)
+                        div(id="shadow" class="absolute left-0 bottom-0 right-0 p-2")
+                            p(id="card_image--price" class="text-yellow-300 font-medium") $
+                                span(class="") #{property.price}
+                    div(id="card__info" class="h-2/5")
+                        div(class="h-3/4")
+                            h5(class="my-2 text-center text-lg md:text-xl font-medium") #{property.title}
+                        div(id="card__info--characteristics" class="flex justify-evenly h-1/4") 
+                            //Bedrooms
+                            div(id="card__info--characteristics--bedrooms" class="flex")
+                                svg(xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bed" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff9300" fill="none" stroke-linecap="round" stroke-linejoin="round")
+                                    path( stroke="none" d="M0 0h24v24H0z" fill="none")
+                                    path( d="M3 7v11m0 -4h18m0 4v-8a2 2 0 0 0 -2 -2h-8v6" )
+                                    circle( cx="7" cy="10" r="1")
+                                div
+                                    p(class="font-medium ml-1 text-gray-700") #{property.bedrooms}
+
+                            //Bathrooms
+                            div(id="card__info--characteristics--bathrooms" class="flex")
+                                svg(xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-bath" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff9300" fill="none" stroke-linecap="round" stroke-linejoin="round")
+                                    path(stroke="none" d="M0 0h24v24H0z" fill="none")
+                                    path(d="M4 12h16a1 1 0 0 1 1 1v3a4 4 0 0 1 -4 4h-10a4 4 0 0 1 -4 -4v-3a1 1 0 0 1 1 -1z" )
+                                    path(d="M6 12v-7a2 2 0 0 1 2 -2h3v2.25" )
+                                    path(d="M4 21l1 -1.5")
+                                    path(d="M20 21l-1 -1.5" )
+                                div
+                                    p(class="font-medium ml-1 text-gray-700") #{property.bathrooms}
+
+                            //Parkings
+                            div(id="card__info--characteristics--parkings" class="flex")
+                                svg(xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-parking" width="22" height="22" viewBox="0 0 24 24" stroke-width="1.5" stroke="#ff9300" fill="none" stroke-linecap="round" stroke-linejoin="round")
+                                    path(stroke="none" d="M0 0h24v24H0z" fill="none")
+                                    rect(x="4" y="4" width="16" height="16" rx="2") 
+                                    path(d="M9 16v-8h4a2 2 0 0 1 0 4h-4")
+                                div
+                                    p(class="font-medium ml-1 text-gray-700") #{property.parkings}                
+        else 
+            strong(class="text-xl text-gray-200 text-center mx-auto block") There are not properties
