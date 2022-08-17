@@ -34,3 +34,9 @@ export interface Location {
     latitude: string,
     longitude: string
 }
+
+export interface Message {
+    id_property: string,
+    id_user: number,
+    message: string
+}
