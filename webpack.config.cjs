@@ -8,7 +8,9 @@ const prodConfig = {
         maps: path.join(__dirname, '/app/public/src/maps.js'),
         dropImage: path.join(__dirname, '/app/public/src/dropImage.js'),
         panel: path.join(__dirname, '/app/public/src/panel.js'),
-        mapsPublic: path.join(__dirname, '/app/public/src/maps-public.js')
+        mapsPublic: path.join(__dirname, '/app/public/src/maps-public.js'),
+        indexGlobalMap: path.join(__dirname, '/app/public/src/index-global-map.js'),
+        navBar: path.join(__dirname, 'app/public/src/navBar.js')
     },
     output: {
         filename: '[name].js',
@@ -33,7 +35,9 @@ const devConfig = {
         maps: path.join(__dirname, '/app/public/src/maps.js'),
         dropImage: path.join(__dirname, '/app/public/src/dropImage.js'),
         panel: path.join(__dirname, '/app/public/src/panel.js'),
-        mapsPublic: path.join(__dirname, '/app/public/src/maps-public.js')
+        mapsPublic: path.join(__dirname, '/app/public/src/maps-public.js'),
+        indexGlobalMap: path.join(__dirname, '/app/public/src/index-global-map.js'),
+        navBar: path.join(__dirname, 'app/public/src/navBar.js'),
     },
     output: {
         filename: '[name].js',
