@@ -1,0 +1,59 @@
+extends ../layouts/app
+
+block styles
+    //css styles for leatflet
+    link(rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css")
+
+block content
+    if (!user)
+        div(id="contact" class="fixed bottom-0 md:bottom-8 left-0 right-0 md:left-auto md:right-10 p-2 md:p-4 md:rounded-full bg-red-500 hover:bg-red-600 hover:cursor-pointer text-white text-center")
+            a(href="/auth-view/login" class="") Login if you want to buy this
+    div(id="property" class="relative")
+        img(id="property__image" class="max-h-screen w-full" src=`${property.image ? `/img/server/${property.vendor}/uploads/${property.id_property}/${property.image}` : '/img/unknow-house.jpg'}` alt=`Image from ${property.title}`)
+        div(id="property__sidebar" class="md:absolute p-8 w-full md:w-1/2 flex items-center justify-center")
+            div(class="text-justify font-semibold")
+                h2(class="font-medium text-gray-100 text-4xl md:text-6xl") #{property.title}
+                h3(class="font-medium text-gray-300 text-2xl md:text-4xl my-3") Vendor:
+                    |
+                    |
+                    span(class="text-blue-500") #{user && property.user.email === user.email ? 'You' : property.user.name}
+                h4(class="font-medium text-gray-300 text-xl md:text-2xl my-3") Category:
+                    |
+                    |
+                    span(class="text-blue-500") #{property.category.name}
+
+                div(class="h-48 overflow-y-auto p-2")
+                    p(class="text-yellow-500 leading-10") #{property.description ? property.description : 'Without description.'}
+
+                p(id="property-price" class="md:my-5 text-green-600 text-4xl md:text-6xl text-center") $
+                    |
+                    |
+                    span #{property.price}
+
+            if (user && property.user.email === user.email)
+                a(href=`/me/property/edit/${property.id_property}` class="absolute right-2 top-2 p-4 bg-yellow-400 hover:bg-yellow-500 text-center w-32 rounded-xl hover:shadow-lg text-gray-50") Edit
+        if (user && user.email && property.user.email !== user.email)
+            a(href="#contact" class="absolute top-2 right-2 lg:bottom-10 lg:top-auto lg:right-10 p-2 lg:p-5 bg-yellow-500 hover:bg-yellow-600 text-white") Contact with the vendor
+    section(class="space-y-4")
+        div(id="map" class="h-96 space-y-4 relative")
+            div(id="map-location" class="absolute left-0 md:left-20 right-0 md:right-auto md:top-5 shadow-2xl shadow-body px-16 md:p-2")
+                h2(class="font-medium text-lg md:text-2xl text-gray-400") Address
+                h3(class="font-bold text-sm md:text-lg text-gray-300") #{property.location.address}
+
+        p(id="latitude" hidden) #{property.location.latitude}
+        p(id="longitude" hidden) #{property.location.longitude}
+        p(id="address" hidden) #{property.location.address}
+    if (user && user.email && property.user.email !== user.email)
+        div(class="my-2 w-full")
+            form(id="contact" action=`/messages/contact/${property.id_property}` method="POST" class="flex flex-col w-3/4 md:w-1/2 mx-auto p-2 shadow-xl")
+                input(type="hidden" name="_csrf" value=csrfToken)
+                label(for="meesage" class="text-center text-2xl font-semibold text-gray-500") Write a message
+                textarea(name="message", cols="30", rows="5" class="border-2 border-gray-400")
+                span(class="text-red-500") #{(errors.inputErrors.message) ? errors.inputErrors.message.msg : ''}
+
+                input(type="submit" class="w-full md:w-1/2 mx-auto my-2.5 p-2 bg-blue-500 hover:cursor-pointer hover:bg-blue-600 text-white hover:shadow-lg" value="Send Message")
+    script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet@3.0.8/dist/esri-leaflet.js")
+    script(src="https://unpkg.com/esri-leaflet-geocoder@2.2.13/dist/esri-leaflet-geocoder.js")
+    script(src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geosearch/2.7.0/bundle.min.js")
+    script(src="/js/mapsPublic.js")
