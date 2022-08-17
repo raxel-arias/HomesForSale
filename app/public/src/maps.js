@@ -53,7 +53,7 @@
 
         const userCoords = await getUserLocation();
     
-        html_span_address.textContent = html_input_fullAddress.value || 'Empty';
+       if (html_span_address) html_span_address.textContent = html_input_fullAddress.value || 'Empty';
 
         if (!html_input_fullAddress.value) {
             setLocation(userCoords.latitude, userCoords.longitude);
