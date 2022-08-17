@@ -153,14 +153,54 @@ export class PropertyController {
         });
     }
 
-    public GetPublicProperties(): Promise<ResolveResponse | RejectResponse> {
+    public GetPublicProperties(searchParams?: SearchParams): Promise<ResolveResponse | RejectResponse> {
+        const {minPrice, maxPrice, ...params} = searchParams!;
         return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
             try {
+                if (searchParams?.category_type) {
+                    const categoryFound = await CategoriesModel.findOne({where: {id_category: searchParams?.category_type}});
+    
+                    if (!categoryFound) {
+                        return reject({
+                            msg: 'Category not found',
+                            error: false
+                        });
+                    }
+                }
+                
                 const propertiesList = await PropertiesModel.findAll({
                     where: {
-                        published: 1
+                        published: 1,
+                        ...params,
+                        [Op.and]: [
+                            {
+                                ...(minPrice && {
+                                    price: {
+                                        [Op.gte]: minPrice
+                                    }
+                                })
+                            },
+                            {
+                                ...(maxPrice && {
+                                    price: {
+                                        [Op.lte]: maxPrice
+                                    }
+                                })
+                            }
+                        ],
+                        ...(params.title && {
+                            title: {
+                                [Op.like]: `%${params.title}%`
+                            }
+                        })
                     },
-                    include: [{model: CategoriesModel, as: 'category'}]
+                    include: [
+                        {model: CategoriesModel, as: 'category'},
+                        LocationsModel
+                    ],
+                    order: [
+                        ['updatedAt', 'DESC']
+                    ]
                 });
 
                 resolve({
@@ -196,7 +236,8 @@ export class PropertyController {
                                 'name',
                                 'email'
                             ]
-                        }
+                        },
+                        LocationsModel
                     ]
                 });
 
