@@ -29,10 +29,7 @@ export default class Routes {
 
     private Enable404(): void {
         WEB_SERVER.use('*', (req: Request, res: Response) => {
-            res.status(404).json({
-                msg: 'Not Found',
-                url: req.originalUrl
-            });
+            res.redirect('/error/404');
         });
     }
 }
