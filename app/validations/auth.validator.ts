@@ -7,8 +7,7 @@ export class AuthValidator {
             .trim()
             .not().isEmpty().withMessage("Name must not be empty")
             .isString().withMessage('Name must be a string')
-            .escape()
-            .toUpperCase(),
+            .escape(),
         body('email')
             .exists().withMessage('Email must exist')
             .trim()
