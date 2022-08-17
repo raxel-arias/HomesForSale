@@ -1,5 +1,9 @@
 *, *::after, *::before {
-    transition: all .2s ease-in;
+    transition: all .15s ease-in;
+}
+
+body {
+    overflow-x:hidden;  
 }
       
 #app-body {
@@ -9,16 +13,33 @@
     background-size: cover;
     min-height: 100vh;
 }
-
-#add-new-property {
+ 
+#add-new-property, #property-card, #shadow {
     background-color: rgba(0, 0, 0, .5);
 }
 
-#add-new-property:hover, #add-new-property-form {
+#property__sidebar, .shadow-body {
+    background-color: rgba(0, 0, 0, .7);
+}
+
+#property__sidebar {
+    bottom: 0;
+    top: 0;
+    right: 0;
+
+    animation: right-to-center .5s;
+}
+
+#add-new-property:hover, #property-card:hover, #add-new-property-form {
     background-color: rgba(0, 0, 0, .8)
 }
 
+#map-location {
+    z-index: 1000;
+}
+
 .fade {
+    z-index: 20;
     animation: fade-in .5s;
 }
 
@@ -30,4 +51,46 @@
     100% {
         opacity: 1;
     }
+}
+
+@keyframes right-to-center {
+    0% {
+        right: -100%;
+    }
+
+    100% {
+        right: 0;
+    }
+}
+
+@keyframes left-to-center {
+    0% {
+        left: -100%;
+    }
+
+    100% {
+        left: 0;
+    }
+}
+
+@keyframes center-to-left {
+    0% {
+        left: 0;
+    }
+
+    100% {
+        left: -100%;
+    }
+}
+
+.sidebar {
+    animation: left-to-center .3s;
+}
+
+.sidebar-hide {
+    animation: center-to-left .3s;
+}
+
+#contact {
+    z-index: 1500;
 }
