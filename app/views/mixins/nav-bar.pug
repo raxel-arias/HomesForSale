@@ -2,7 +2,7 @@ include ../mixins/categories-list
 
 mixin navBar() 
     div(class="navbar-menu relative hidden" style="z-index:2000")
-        div(class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto")
+        div(id="sidebar" class="fixed top-0 left-0 bottom-0 flex flex-col w-5/6 max-w-sm py-6 px-6 bg-white border-r overflow-y-auto")
             div(class="flex items-center mb-4")
                 a(class="flex mr-auto text-2xl leading-none gap-2" href="/")
                     img(src="/favicon.png", alt="Icon" class="w-8")
