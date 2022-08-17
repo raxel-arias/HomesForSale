@@ -2,7 +2,8 @@ import { Router } from "express";
 import { 
     ShowSetImageView,
     ShowCreatePropertyView,
-    ShowMeView } from "../../middlewares/views/properties-management/properties-management-views.mw";
+    ShowMeView, 
+    ShowEditPropertyView} from "../../middlewares/views/properties-management/properties-management-views.mw";
 import {JWT} from '../../handlers/Auth.handler';
 import { ValidatePropertyExistence } from "../../middlewares/properties/properties.mw";
 
@@ -15,3 +16,4 @@ PropertiesManagementViewsRouter.use('/me', JWT.ValidateJWT, PropertiesManagement
 PropertiesManagementViewsRouterChilds.get('/', ShowMeView);
 PropertiesManagementViewsRouterChilds.get('/create-property', ShowCreatePropertyView);
 PropertiesManagementViewsRouterChilds.get('/property/set-image/:id_property', ValidatePropertyExistence, ShowSetImageView);
+PropertiesManagementViewsRouterChilds.get('/property/edit/:id_property', ValidatePropertyExistence, ShowEditPropertyView);
