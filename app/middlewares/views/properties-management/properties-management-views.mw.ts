@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import { PropertyController } from "../../../controllers/properties/property.controller";
 import { CategoriesController } from "../../../controllers/categories/categories.controller";
 import { LocationController } from "../../../controllers/locations/locations.controller";
+import { CalculatePaginationCount, GeneratePagination } from "../../../utils/pagination.utils";
 import { Property, User } from '../../../interfaces/models/models.interface';
 import { ResolveResponse } from "../../../interfaces/response.interface";
+import { Pagination } from "../../../interfaces/controllers/pagination.interface";
 
 export const ShowMeView = async (req: Request, res: Response): Promise<void> => {
     let requestError: any = req.flash('req-error')[0] || {};
@@ -11,17 +13,46 @@ export const ShowMeView = async (req: Request, res: Response): Promise<void> => 
 
     const user: User = <User>req.user;
 
+    const {
+        page
+    } = req.query;
+    
+    const queryParamsRegex = /^[0-9]$/;
+
+    if (page && !queryParamsRegex.test(<string> page)) {
+        return res.redirect('/me');
+    }
+
     try {
-        const propertiesList: Property[] = <Property[]>(<ResolveResponse> await new PropertyController().GetProperties(user.id_user!)).data.propertiesList;
+        const paginationInfo: Pagination = {
+            page: Number(page) || 1,
+            limit: 3
+        };
+
+        const [a, b] = await Promise.all([
+            new PropertyController().GetProperties(user.id_user!, paginationInfo),
+            new PropertyController().GetPropertiesCounter(user.id_user!)
+        ]);
+
+        const propertiesList: Property[] = <Property[]>(<ResolveResponse> a).data.propertiesList;
+        const propertiesCount: number = JSON.parse(JSON.stringify(b));
+
+        const paginationCount = CalculatePaginationCount(paginationInfo.limit, propertiesCount);
+        const paginationData = GeneratePagination(paginationInfo.page, paginationInfo.limit);
     
         res.render('management/panel', {
             title: 'My Panel',
             subtitle: 'My Properties',
             user,
             propertiesList,
+            propertiesCount,
+            paginationCount,
+            page: page || 1,
+            paginationData,
     
             errors: {requestError},
-            info: requestInfo
+            info: requestInfo,
+            csrfToken: req.csrfToken()
         });
     } catch (error: any) {
         req.flash('req-error', error);
