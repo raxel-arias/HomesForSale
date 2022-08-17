@@ -53,10 +53,40 @@ export const ShowIndexView = async (req: Request, res: Response): Promise<void> 
 }
 
 export const ShowIndexByGlobalMapView = async (req: Request, res: Response): Promise<void> => {
+    const user: User = <User> req.user;
+
+    let requestError: any = req.flash('req-error')[0] || {};
+    let requestInfo: any = req.flash('req-info')[0] || {};
+
+    const {
+        category
+    } = req.query;
+
+    const queryParamsRegex = /^[0-9][0-9]$/;
+
+    if (category && !queryParamsRegex.test(<string> category)) {
+        return res.redirect('/app/index');
+    }
+
     try {
+        const categoriesList: Category[] = <Category[]>(<ResolveResponse> await new CategoriesController().CategoriesList()).data.categoriesList;
 
+        res.render('public-view/global', {
+            title: 'Index .:Global:.',
+            subtitle: 'Global Map',
+            user,
+            index: true,
+            categoriesList,
+            searcher: true,
+
+            errors: {requestError},
+            info: requestInfo,
+            csrfToken: req.csrfToken(),
+        });
     } catch (error: any) {
-
+        req.flash('req-error', error);
+        
+        res.redirect('/app/index');
     }
 }
 
