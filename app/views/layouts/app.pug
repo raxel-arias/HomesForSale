@@ -1,25 +1,35 @@
+include ../mixins/nav-bar
+
 doctype html
 html(lang="en")
     head
         include ../partials/head
     body(id=!index ? 'app-body' : '')
-        header(class=`text-center bg-gray-800 ${!hideSubtitle ? 'mb-5' : ''}`)
-            div(class="flex items-center container mx-auto justify-between p-2")
+        header(class=`fixed top-0 left-0 right-0 text-center bg-gray-800 ${!hideSubtitle ? 'mb-5' : ''}` style="z-index:1500")
+            div(class="flex items-center container mx-auto justify-between p-2 gap-2")
                 div(class="flex items-center gap-2")
-                    a(href="/app/index")
-                        img(src="/favicon.png", alt="Icon" class="w-12")
-                    span(class="text-gray-200 text-xl")
+                    a(href="/app/index" class="flex items-center gap-2")
+                        img(src="/favicon.png", alt="Icon" class="w-8 md:w-12")
+                        span(class="lg:hidden text-white") HomesFor
+                            span(class="text-orange-500") Sale
+                    span(class="hidden lg:inline-block text-gray-200 text-xl")
                         | Welcome,
                         |
                         a(href="/me") 
                             strong(class="text-orange-400 hover:text-orange-500") #{user ? user.name : 'Guest'}
-                if (user)
-                    div
-                        a(href="/me/logout" class="p-3 bg-red-500 hover:bg-red-400 text-white rounded-xl shadow-2xl") Logout
-                if (!user)
-                    div
-                        a(href="/auth-view/signup" class="block md:inline-block p-2 rounded-xl bg-orange-400 hover:bg-orange-500 text-white") Create an Account
-
+                div(class="hidden lg:flex justify-end")
+                    if (user)
+                        div
+                            a(href="/auth/logout" class="p-3 bg-red-500 hover:bg-red-400 text-white rounded-xl shadow-2xl") Logout
+                    if (!user)
+                        div(class="")
+                            a(href="/auth-view/signup" class="block md:inline-block p-2 rounded-xl bg-orange-400 hover:bg-orange-500 text-white") Create an Account
+                button(class="lg:hidden navbar-burger flex items-center text-orange-500 p-3")
+                    svg(class="block h-4 w-4 fill-current" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg")
+                        title Mobile menu
+                        path(d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z")
+        +navBar()
+        div(class="p-10")
 
         main(class=`${!hideSubtitle ? "my-5" : ''}`)
             if (errors && Object.keys(errors.requestError).length)
@@ -30,9 +40,10 @@ html(lang="en")
                     p(class="text-xl fade") #{info.msg}
 
             if (!hideSubtitle)
-                h1(class="my-5 font-semibold text-4xl text-center text-gray-300") #{subtitle}
+                h1(class=`my-5 font-semibold text-4xl text-center ${index ? 'text-gray-500' : 'text-gray-300'}`) #{subtitle}
             div(class="fade")
                 block content
 
         script(src="/js/index.js")
+        script(src="/js/navBar.js")
         block scripts
