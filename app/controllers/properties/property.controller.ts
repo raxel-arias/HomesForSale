@@ -96,17 +96,48 @@ export class PropertyController {
         });
     }
 
-    public GetProperties(id_user: number): Promise<ResolveResponse | RejectResponse> {
+    public GetProperties(id_user: number, pagination: Pagination): Promise<ResolveResponse | RejectResponse> {
         return new Promise(async (resolve: (info: ResolveResponse) => void, reject: (reason: RejectResponse) => void) => {
             try {
+                const paginationConfig = GeneratePagination(pagination.page, pagination.limit);
+
+                // let query = `
+                // SELECT
+                //     user.id_user as id_vendor,
+                //     user.name as vendor_name,
+                //     prop.*,
+                //     cat.name as cat_name,
+                //     (COUNT(msg.id_property)) as messages
+                // FROM properties prop
+                // INNER JOIN categories cat on cat.id_category = prop.category_type
+                // INNER JOIN users user on user.id_user = prop.vendor
+                // LEFT OUTER JOIN messages msg on msg.id_property = prop.id_property
+                // WHERE prop.vendor = ${id_user}
+                // GROUP BY prop.id_property
+                // ORDER BY msg.createdAt DESC, prop.updatedAt DESC
+                // LIMIT ${paginationConfig.offset}, ${paginationConfig.limit}
+                // `
+                // const propertiesList = await PropertiesModel.sequelize?.query(query, {type: QueryTypes.SELECT});
+
                 const propertiesList = await PropertiesModel.findAll({
+                    ...paginationConfig,
                     where: {
                         vendor: id_user
                     },
-                    include: [{model: CategoriesModel, as: 'category'}]
+                    include: [
+                        {model: CategoriesModel, as: 'category'},
+                        {
+                            model: MessagesModel, 
+                            as: 'messages', 
+                            order: ['createdAt', 'DESC']
+                        }
+                    ],
+                    order: [
+                        ['updatedAt', 'DESC']
+                    ]
                 });
-
-                resolve({
+                
+                resolve({   
                     msg: 'Properties list obtained',
                     data: {
                         propertiesList
