@@ -6,6 +6,9 @@ block styles
 
 block content
     div(class="mx-auto w-11/12 md:w-3/6")
+        div(class="flex justify-start")
+            a(href="/me" class="w-full md:w-1/6 text-center block my-2.5 p-4 bg-yellow-500 rounded-xl shadow-xl hover:shadow:2xl hover:bg-yellow-600 text-gray-200") Back
+
         form(id="add-new-property-form" action="/properties/create" method="POST" class="space-y-8 bg-gray-800 p-2 rounded-xl shadow-2xl")
             input(type="hidden" name="_csrf" value=csrfToken)
             div(id="general-info" class="space-y-4")
@@ -39,7 +42,7 @@ block content
                 div(class="flex items-center justify-between")
                     div(class="w-1/2")
                         label(for="bedrooms" class="block text-base uppercase text-gray-300 mb-2 font-medium") Bedrooms
-                        input(type="number" min=0 name="bedrooms" id="bedrooms" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of bedrooms" value=`${inputs ? inputs.bedrooms : ''}`)
+                        input(type="number" min=0 name="bedrooms" id="bedrooms" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of bedrooms" value=`${inputs ? inputs.bedrooms : 0}`)
                         span(class="text-red-500") #{errors.inputErrors.bedrooms ? errors.inputErrors.bedrooms.msg : ''}
                     div(class="mx-auto w-1/2 text-center")
                         div(class="my-5")
@@ -53,7 +56,7 @@ block content
                 div(class="flex items-center justify-between")
                     div(class="w-1/2")
                         label(for="bathrooms" class="block text-base uppercase text-gray-300 mb-2 font-medium") Bathrooms
-                        input(type="number" min=0 name="bathrooms" id="bathrooms" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of bathrooms" value=`${inputs ? inputs.bathrooms : ''}`)
+                        input(type="number" min=0 name="bathrooms" id="bathrooms" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of bathrooms" value=`${inputs ? inputs.bathrooms : 0}`)
                         span(class="text-red-500") #{errors.inputErrors.bathrooms ? errors.inputErrors.bathrooms.msg : ''}
                     div(class="mx-auto w-1/2 text-center")
                         div(class="my-5")
@@ -67,7 +70,7 @@ block content
                 div(class="flex items-center justify-between")
                     div(class="w-1/2")
                         label(for="parkings" class="block text-base uppercase text-gray-300 mb-2 font-medium") Parking Spaces
-                        input(type="number" min=0 name="parkings" id="parkings" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of parking spaces" value=`${inputs ? inputs.parkings : ''}`)
+                        input(type="number" min=0 name="parkings" id="parkings" class="w-full px-3 py-2 placeholder-gray-400" placeholder="Number of parking spaces" value=`${inputs ? inputs.parkings : 0}`)
                         span(class="text-red-500") #{errors.inputErrors.parkings ? errors.inputErrors.parkings.msg : ''}
                     div(class="mx-auto w-1/2 text-center")
                         div(class="my-5")
@@ -103,7 +106,7 @@ block content
                             input(type="hidden" name="longitude" id="longitude", value=(inputs ? inputs.longitude : null))
                        
             div(class="flex justify-end")
-                input(type="submit" value="Create" class="p-4 bg-yellow-500 hover:bg-yellow-600 hover:cursor-pointer text-white rounded-xl")
+                input(type="submit" value="Create" class="w-full md:w-1/6 p-4 bg-yellow-500 hover:bg-yellow-600 hover:cursor-pointer text-white rounded-xl")
 
 block scripts
     script(src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js")
