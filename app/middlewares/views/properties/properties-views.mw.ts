@@ -102,13 +102,16 @@ export const ShowPublicPropertyView = async (req: Request, res: Response): Promi
     const input = req.flash('input-data')[0];
 
     try {
+        const categoriesList: Category[] = <Category[]>(<ResolveResponse> await new CategoriesController().CategoriesList()).data.categoriesList;
         const property: PropertyFound = <PropertyFound>(<ResolveResponse> await new PropertyController().GetPublicProperty(id_property!)).data.propertyFound;
-        console.log(property.user.email);
+        
         res.render('public-view/property', {
             title: property.title,
             subtitle: 'Vendor: ' + property.user.name,
             hideSubtitle: true,
             index: true,
+            indexPage: true,
+            categoriesList,
 
             user,
             property,
