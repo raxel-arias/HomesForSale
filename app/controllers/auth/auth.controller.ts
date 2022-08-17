@@ -277,7 +277,8 @@ export class AuthController {
             try {
                 const userFound = await UsersModel.findOne({
                     where: {
-                        id_user
+                        id_user,
+                        active: 1
                     }
                 });
 
